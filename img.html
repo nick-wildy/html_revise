@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            box-sizing: border-box;
+        }
+        .list {
+            width: 500px;
+            margin: auto;
+            padding: 5px;
+            border: 2px solid black;
+            display: flex;
+        }
+        .item {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            font-weight: bold;
+            border: 1px solid grey;
+            margin: 5px;
+            cursor: pointer;
+        }
+        .item:hover {
+            background-color: #f5f6f7;
+        }
+        .thumbnail {
+            width: 500px;
+            height: 500px;
+            border: 1px solid red;
+            margin: 20px auto;
+            font-size: 50px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+
+    <div class="list">
+        <div class="item">1</div>
+        <div class="item">2</div>
+        <div class="item">3</div>
+        <div class="item">4</div>
+        <div class="item">5</div>
+    </div>
+
+    <div class="thumbnail">1</div>
+
+    <script>
+        let rsid = 0
+
+        document.querySelectorAll('div.item').forEach(item => {
+            item.addEventListener('click', function(event) {
+                const thisId = +event.target.innerText
+                console.log(thisId)
+                document.querySelector('div.thumbnail').innerText = thisId
+            })
+        })
+
+    </script>
+    
+</body>
+</html>

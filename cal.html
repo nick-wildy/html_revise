@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #root {
+            display: flex;
+        }
+        table {
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 20px 20px;
+            border: 1px solid #dadada;
+            width: 50px;
+        }
+        td:hover {
+            cursor: pointer;
+            background-color: #f5f6f7;
+            font-weight: bold;
+        }
+        #holy {
+            box-sizing: border-box;
+            width: 250px;
+            border: 1px solid black;
+            padding: 20px;
+            margin: 0 50px;
+        }
+        .hidden {
+            display: none;
+        }
+        ul {
+            list-style: none;
+        }
+        .rsStatusList {
+            border: 1px solid red;
+            margin-left: 10px;
+            padding-right: 40px;
+        }
+        td a {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="root">
+        <table id="table" class="caltable">
+            <thead>
+                <tr>
+                    <th>일</th>
+                    <th>월</th>
+                    <th>화</th>
+                    <th>수</th>
+                    <th>목</th>
+                    <th>금</th>
+                    <th>토</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td><a>1</a></td>
+                    <td><a>2</a></td>
+                    <td><a>3</a></td>
+                    <td><a>4</a></td>
+                    <td><a>5</a></td>
+                </tr>
+                <tr>
+                    <td><a>6</a></td>
+                    <td><a>7</a></td>
+                    <td><a>8</a></td>
+                    <td><a>9</a></td>
+                    <td><a>10</a></td>
+                    <td><a>11</a></td>
+                    <td><a>12</a></td>
+                </tr>
+                <tr>
+                    <td><a>13</a></td>
+                    <td><a>14</a></td>
+                    <td><a>15</a></td>
+                    <td><a>16</a></td>
+                    <td><a>17</a></td>
+                    <td><a>18</a></td>
+                    <td><a>19</a></td>
+                </tr>
+                <tr>
+                    <td><a>20</a></td>
+                    <td><a>21</a></td>
+                    <td><a>22</a></td>
+                    <td><a>23</a></td>
+                    <td><a>24</a></td>
+                    <td><a>25</a></td>
+                    <td><a>26</a></td>
+                </tr>
+                <tr>
+                    <td><a>27</a></td>
+                    <td><a>28</a></td>
+                    <td><a>29</a></td>
+                    <td><a>30</a></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- <div id="holy">
+            <div class="holy_item hidden">20221126 ~ 20221130</div>
+            <div class="holy_item hidden">20221122 ~ 20221125</div>
+        </div> -->
+
+        <div class="rsStatusList hidden">
+            <ul>
+                <li class="rssList hidden">
+                    <p class="rssTime">
+                       <span>날짜 : </span>
+                       <span class="rssTimeDay">
+                          20221103 ~ 20221111
+                       </span>
+                    </p>
+                 </li>
+                <li class="rssList hidden">
+                    <p class="rssTime">
+                       <span>날짜 : </span>
+                       <span class="rssTimeDay">
+                          20221121 ~ 20221125 
+                       </span>
+                    </p>
+                 </li>
+                 <li class="rssList hidden">
+                    <p class="rssTime">
+                       <span>날짜 : </span>
+                       <span class="rssTimeDay">
+                          20221127 ~ 20221129
+                       </span>
+                    </p>
+                 </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <script>
+        const tdList = document.querySelectorAll('#table td')
+        const rsStatusList = document.querySelector('div.rsStatusList') /* 추가됨 */
+        
+
+        const findParentNode = function(element, parentTagName) {
+            parentTagName = parentTagName.toUpperCase()
+            let target = element
+            while(target.parentNode.tagName != parentTagName) {
+                target = target.parentNode
+            }
+            return target.parentNode
+        }
+
+        const clickHandler = function(event) {
+            console.log(event.target.tagName)
+
+            const realtds = Array.from(document.querySelectorAll('table.caltable td:not(table table td)'))
+            console.log(realtds)
+            let selfTd = event.target
+            if(selfTd.tagName != 'TD') {
+                selfTd = findParentNode(selfTd, 'td')
+            }
+
+            const index = realtds.indexOf(selfTd) % 7
+            let weekArr = ['일', '월', '화', '수', '목', '금', '토']
+
+            // alert(weekArr[index] + '요일 !!')
+
+
+            /* 클릭한 날짜가 한자릿수면 0 더하기 */
+            let num = +event.target.innerText
+            if(num < 10) {
+                num = '0' + num
+            }
+            const value = +('202211' + num)
+
+
+            const holyList = document.querySelectorAll('.rssTimeDay')   // 클래스 이름 수정했습니다
+            holyList.forEach(holy => {
+                const st = +holy.innerText.split(' ~ ')[0]
+                const et = +holy.innerText.split(' ~ ')[1]
+                const size = et - st + 1
+                // const arr = [...Array(size).keys()].map(key => key + st)
+                const arr = Array.from({length: size}, (v, i) => i + st)
+
+                const li = findParentNode(holy, 'li')
+
+                if(arr.includes(value)) {
+                    // holy.classList.remove('hidden')  // 요소를 직접 숨기는 대신
+                    li.classList.remove('hidden')       // 부모요소를 숨깁니다
+                }
+                else {
+                    // holy.classList.add('hidden')
+                    li.classList.add('hidden')
+                }
+            })
+
+            /* 추가됨 : 전체 div안에 rssList 이면서 hidden이 아닌 엘리먼트의 개수가 몇개인가 (dataCount) */
+            /* 추가됨 : 전체 div안에 rssList 개수가 몇개인가 (allCount, 근데 안씀 ㅋ) */
+            const dataCount = document.querySelectorAll('div.rsStatusList li.rssList:not(.hidden)').length
+            const allCount = document.querySelectorAll('div.rsStatusList li.rssList').length
+
+            if(dataCount == 0) {    // 표시할 데이터가 0개이면
+                rsStatusList.classList.add('hidden')    // 빨간색 전체 div를 숨긴다
+            }
+            else {                  // 아니면,
+                rsStatusList.classList.remove('hidden') // 보여준다
+            }
+        }
+
+        tdList.forEach(td => td.addEventListener('click', clickHandler))
+    </script>
+    
+    
+
+</body>
+</html>
